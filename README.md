@@ -1,4 +1,4 @@
-This repository will contain mostly documentation about my Tensorflow (CPU + GPU) setup incl. the prerequirements on (L)Ubuntu Linux.
+This repository will mostly contain documentation about my Tensorflow (CPU + GPU) setup incl. the prerequirements on (L)Ubuntu Linux.
 
 # My Hardware Setup #
 - Board: Asrock Fatal1ty X370 Gaming-ITX/ac (Bios 3.40)
