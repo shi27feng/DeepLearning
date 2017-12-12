@@ -86,13 +86,13 @@ sudo apt install bazel
 ```
 
 ### OpenCL Devel ###
-- only needed if you want to compile an OpenCL version of Tensorflow by yourself
+- only needed if you want to compile an OpenCL version of Tensorflow
 ```
 sudo apt install ocl-icd-opencl-dev opencl-headers
 ```
 
 ### ComputeCPP ###
-- only needed if you want to compile an OpenCL version of Tensorflow by yourself
+- only needed if you want to compile an OpenCL version of Tensorflow
 ```
 sudo mkdir /usr/local/computecpp
 ```
