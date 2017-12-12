@@ -1,6 +1,6 @@
 This repository will mostly contain documentation about my Tensorflow (CPU + GPU) setup incl. the prerequirements on (L)Ubuntu Linux.
 
-# My Hardware Setup #
+# Hardware Setup #
 - Board: Asrock Fatal1ty X370 Gaming-ITX/ac (Bios 3.40)
 - CPU: AMD A12-9800E APU (4 CPU cores and 8 GPU cores [= 512 stream processors])
 - CPU Cooler: Noctua NH-L9a incl. AM4 retention kit
@@ -10,7 +10,7 @@ This repository will mostly contain documentation about my Tensorflow (CPU + GPU
 - Power Supply: Corsair SF450 SFX
 - Case: Cooltek U1
 
-# My Basic Software Setup #
+# Basic Software Setup #
 - pure UEFI install
 - Lubuntu 17.10
 - Kernel: the current version of the 4.14.x branch (via [Ubuntu Mainline Kernels](http://kernel.ubuntu.com/~kernel-ppa/mainline/)) and the official 4.13 Ubuntu 17.10 version as fallback
