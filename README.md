@@ -13,7 +13,7 @@ This repository will mostly contain documentation about my Tensorflow (CPU + GPU
 # My Basic Software Setup #
 - pure UEFI install
 - Lubuntu 17.10
-- Kernel: the current version of the 4.14.x branch (via Ubuntu Mainline Kernels) and the official 4.13 Ubuntu 17.10 version as fallback
+- Kernel: the current version of the 4.14.x branch (via [Ubuntu Mainline Kernels](http://kernel.ubuntu.com/~kernel-ppa/mainline/)) and the official 4.13 Ubuntu 17.10 version as fallback
 - Filesystem: DM-LUKS encrypted SSD with BTRFS filesystem
 - Desktop Environment: LXDE
 
