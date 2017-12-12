@@ -19,3 +19,6 @@ This repository will contain mostly documentation about my Tensorflow (CPU + GPU
 
 # AMD OpenCL Setup #
 - see [AMD_OpenCL_Setup](https://github.com/AlphasCodes/DeepLearning/blob/master/AMD_OpenCL_Setup.md)
+
+# Tensorflow Setup #
+- see [Tensorflow Setup](https://github.com/AlphasCodes/DeepLearning/blob/master/Tensorflow_Setup.md)
