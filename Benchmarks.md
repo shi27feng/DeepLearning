@@ -1,7 +1,7 @@
 This document will contain some benchmarks of my setup under different Tensorflow setups (non CPU optimized, CPU optimized, OpenCL).
 
 # matmul_bench.py #
-This file [matmul_bench.py](https://github.com/AlphasCodes/DeepLearning/blob/master/matmul_bench.py) contains code to measure Tops. I found the code in the internet.
+The [matmul_bench.py](https://github.com/AlphasCodes/DeepLearning/blob/master/matmul_bench.py) file contains code to measure Tops. I found the code in the internet.
 
 - Tensorflow non CPU optimized version (all 4 CPU threads were used)
 ```
