@@ -5,7 +5,7 @@ I use the existing Arch Linux [https://aur.archlinux.org/packages/opencl-amd/] w
 
 To get OpenCL running we need to extract the OpenCL related parts from the AMDGPU Pro driver. I use the Legacy OpenCL part of the driver not the ROCm part.
 
-- install "clinfo" to install the prerequirements, clinfo itself is used to check if the OpenCL libraries are working
+- install "clinfo" to install the prerequirements, "clinfo" itself is used to check if the OpenCL libraries are working
 ```
 sudo apt install clinfo
 ```
