@@ -1,9 +1,9 @@
 # AMD OpenCL Setup #
-The full install of the AMDGPU Pro driver (current version is 17.40) is not supported and should not work on my setup so i use a hybrid approach. This is not supported by AMD but fortunatly it works.
+The full install of the AMDGPU Pro driver (current version is 17.50) is not supported and should not work on my setup so i use a hybrid approach. This is not supported by AMD but fortunatly it works.
 
 I use the existing Arch Linux [https://aur.archlinux.org/packages/opencl-amd/] work as basis and adapted it for my needs.
 
-To get OpenCL running we need to extract the OpenCL related parts from the AMDGPU Pro driver.
+To get OpenCL running we need to extract the OpenCL related parts from the AMDGPU Pro driver. I use the Legacy OpenCL part of the driver not the ROCm part.
 
 - install "clinfo" to install the prerequirements, clinfo itself is used to check if the OpenCL libraries are working
 ```
@@ -12,7 +12,7 @@ sudo apt install clinfo
 
 I do all the downloading and extracting stuff in the "$HOME/Downloads" directory. Change it to your needs if you want.
 
-- download the current AMDGPU-PRO driver: http://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Driver-for-Linux-Release-Notes.aspx
+- download the current AMDGPU-PRO driver: https://support.amd.com/en-us/kb-articles/Pages/Radeon-Software-for-Linux-Release-Notes.aspx
 - open a shell, i use LXTerminal (Bash)
 - change the directory to "$HOME/Downloads"
 ```
@@ -21,7 +21,7 @@ cd $HOME/Downloads
 
 ATTENTION: I hard coded the "$HOME/Downloads" directory in the script. If you want to use another directory then you have to change it to your needs. I know there are better / more simple approaches to extract the parts but the following is working for me.
 
-The "/etc/OpenCL/vendors" path is mandatory as far as i know but you can change the "/opt/amdgpu-pro/" path to another one if you want. Then you have to change the commands/script accordingly.
+The "/etc/OpenCL/vendors" and the "/opt/amdgpu/" path is mandatory.
 
 - create the script that will do the extraction of the OpenCL parts
 ```
@@ -31,40 +31,45 @@ vi extract_amdgpu-pro_opencl.sh
 ```
 #!/bin/bash
 
-# change version (e.g. 17.40-492261) as needed
+# change version (e.g. 17.50-511655) as needed
 # you have to extract the AMDGPU-PRO driver if you want to know the used libdrm version
-MAJORVERSION="17.40"
-MINORVERSION="492261"
+MAJORVERSION="17.50"
+MINORVERSION="511655"
 LIBDRMVERSION="2.4.82"
 
 # create the needed directories
 mkdir -p $HOME/Downloads/temp/icd
+mkdir -p $HOME/Downloads/temp/ids
 mkdir -p $HOME/Downloads/temp/libdrm
 mkdir -p $HOME/Downloads/root_directory/etc/OpenCL/vendors
-mkdir -p $HOME/Downloads/root_directory/opt/amdgpu-pro/lib64
-mkdir -p $HOME/Downloads/root_directory/opt/amdgpu-pro/share/libdrm/
+mkdir -p $HOME/Downloads/root_directory/opt/amdgpu/lib64
+mkdir -p $HOME/Downloads/root_directory/opt/amdgpu/share/libdrm/
 
 # extract the OpenCL parts from the AMDGPU Pro driver
 cd $HOME/Downloads
 tar xJf amdgpu-pro-${MAJORVERSION}-${MINORVERSION}.tar.xz
 cp $HOME/Downloads/amdgpu-pro-${MAJORVERSION}-${MINORVERSION}/opencl-amdgpu-pro-icd_${MAJORVERSION}-${MINORVERSION}_amd64.deb $HOME/Downloads/temp/icd
-cp $HOME/Downloads/amdgpu-pro-${MAJORVERSION}-${MINORVERSION}/libdrm-amdgpu-pro-amdgpu1_${LIBDRMVERSION}-${MINORVERSION}_amd64.deb $HOME/Downloads/temp/libdrm
+cp $HOME/Downloads/amdgpu-pro-${MAJORVERSION}-${MINORVERSION}/ids-amdgpu_1.0.0-${MINORVERSION}_all.deb $HOME/Downloads/temp/ids
+cp $HOME/Downloads/amdgpu-pro-${MAJORVERSION}-${MINORVERSION}/libdrm-amdgpu-amdgpu1_${LIBDRMVERSION}-${MINORVERSION}_amd64.deb $HOME/Downloads/temp/libdrm
 
 # extract the icd parts
 cd $HOME/Downloads/temp/icd
 ar x opencl-amdgpu-pro-icd_${MAJORVERSION}-${MINORVERSION}_amd64.deb
 tar xJf data.tar.xz
 cp $HOME/Downloads/temp/icd/etc/OpenCL/vendors/amdocl64.icd $HOME/Downloads/root_directory/etc/OpenCL/vendors
-cp $HOME/Downloads/temp/icd/opt/amdgpu-pro/lib/x86_64-linux-gnu/* $HOME/Downloads/root_directory/opt/amdgpu-pro/lib64
+cp $HOME/Downloads/temp/icd/opt/amdgpu-pro/lib/x86_64-linux-gnu/* $HOME/Downloads/root_directory/opt/amdgpu/lib64
+
+# extract the amdgpu.ids file
+cd $HOME/Downloads/temp/ids
+ar x ids-amdgpu_1.0.0-${MINORVERSION}_all.deb
+tar xJf data.tar.xz
+cp $HOME/Downloads/temp/ids/opt/amdgpu/share/libdrm/amdgpu.ids $HOME/Downloads/root_directory/opt/amdgpu/share/libdrm
 
 # extract the libdrm parts
 cd $HOME/Downloads/temp/libdrm
-ar x libdrm-amdgpu-pro-amdgpu1_${LIBDRMVERSION}-${MINORVERSION}_amd64.deb
+ar x libdrm-amdgpu-amdgpu1_${LIBDRMVERSION}-${MINORVERSION}_amd64.deb
 tar xJf data.tar.xz
-cp $HOME/Downloads/temp/libdrm/opt/amdgpu-pro/lib/x86_64-linux-gnu/* $HOME/Downloads/root_directory/opt/amdgpu-pro/lib64
-
-# add the amdgpu.ids file
-cp /usr/share/libdrm/amdgpu.ids $HOME/Downloads/root_directory/opt/amdgpu-pro/share/libdrm
+cp $HOME/Downloads/temp/libdrm/opt/amdgpu/lib/x86_64-linux-gnu/* $HOME/Downloads/root_directory/opt/amdgpu/lib64
 
 # clean up
 rm -r $HOME/Downloads/temp
@@ -83,21 +88,22 @@ chmod u+x extract_amdgpu-pro_opencl.sh
 sudo cp -ri $HOME/Downloads/root_directory/etc/* /etc
 sudo cp -ri $HOME/Downloads/root_directory/opt/* /opt
 ```
-- an OpenCL application will only work if you provide it the location of the OpenCL libraries, "LD_LIBRARY_PATH=/opt/amdgpu-pro/lib64" will do this
+- an OpenCL application will only work if you provide it the location of the OpenCL libraries, "LD_LIBRARY_PATH=/opt/amdgpu/lib64" will do this
 - you can also use the available options (profile, bashrc, ...) in a Linux distribution to make the OpenCL libraries known to all users in the system
 - check if it works
 ```
-LD_LIBRARY_PATH=/opt/amdgpu-pro/lib64 clinfo
+LD_LIBRARY_PATH=/opt/amdgpu/lib64 clinfo
 ```
 - the result should something like this, it depends on the used GPU and driver version
 ```
-steven@box:~$ LD_LIBRARY_PATH=/opt/amdgpu-pro/lib64 clinfo
+steven@box:~$ LD_LIBRARY_PATH=/opt/amdgpu/lib64 clinfo
 Number of platforms                               1
   Platform Name                                   AMD Accelerated Parallel Processing
   Platform Vendor                                 Advanced Micro Devices, Inc.
-  Platform Version                                OpenCL 2.0 AMD-APP (2482.3)
+  Platform Version                                OpenCL 2.1 AMD-APP (2527.3)
   Platform Profile                                FULL_PROFILE
   Platform Extensions                             cl_khr_icd cl_amd_event_callback cl_amd_offline_devices 
+  Platform Host timer resolution                  <printPlatformInfo:5: get CL_PLATFORM_HOST_TIMER_RESOLUTION : error -30>
   Platform Extensions function suffix             AMD
 
   Platform Name                                   AMD Accelerated Parallel Processing
@@ -105,8 +111,8 @@ Number of devices                                 1
   Device Name                                     Carrizo
   Device Vendor                                   Advanced Micro Devices, Inc.
   Device Vendor ID                                0x1002
-  Device Version                                  OpenCL 1.2 AMD-APP (2482.3)
-  Driver Version                                  2482.3
+  Device Version                                  OpenCL 1.2 AMD-APP (2527.3)
+  Driver Version                                  2527.3
   Device OpenCL C Version                         OpenCL C 1.2 
   Device Type                                     GPU
   Device Profile                                  FULL_PROFILE
@@ -122,7 +128,7 @@ Number of devices                                 1
     Max number of sub-devices                     8
     Supported partition types                     none specified
   Max work item dimensions                        3
-  Max work item sizes                             256x256x256
+  Max work item sizes                             1024x1024x1024
   Max work group size                             256
   Preferred work group size multiple              64
   Wavefront width (AMD)                           64
@@ -162,8 +168,8 @@ Number of devices                                 1
     Support is emulated in software               No
     Correctly-rounded divide and sqrt operations  No
   Address bits                                    64, Little-Endian
-  Global memory size                              2036277248 (1.896GiB)
-  Global free memory (AMD)                        1163236 (1.109GiB)
+  Global memory size                              2030919680 (1.891GiB)
+  Global free memory (AMD)                        1163144 (1.109GiB)
   Global memory channels (AMD)                    4
   Global memory banks per channel (AMD)           8
   Global memory bank width (AMD)                  256 bytes
@@ -197,13 +203,13 @@ Number of devices                                 1
     Profiling                                     Yes
   Prefer user sync for interop                    Yes
   Profiling timer resolution                      1ns
-  Profiling timer offset since Epoch (AMD)        1513061695487142552ns (Tue Dec 12 07:54:55 2017)
+  Profiling timer offset since Epoch (AMD)        1513425979488503324ns (Sat Dec 16 13:06:19 2017)
   Execution capabilities                          
     Run OpenCL kernels                            Yes
     Run native kernels                            No
     Thread trace supported (AMD)                  Yes
     SPIR versions                                 1.2
-  printf() buffer size                            1048576 (1024KiB)
+  printf() buffer size                            4194304 (4MiB)
   Built-in kernels                                
   Device Available                                Yes
   Compiler Available                              Yes
