@@ -22,3 +22,6 @@ This repository will mostly contain documentation about my Tensorflow (CPU + GPU
 
 # Tensorflow Setup #
 - see [Tensorflow Setup](https://github.com/AlphasCodes/DeepLearning/blob/master/Tensorflow_Setup.md)
+
+# Benchmarks #
+- see [Benchmarks](https://github.com/AlphasCodes/DeepLearning/blob/master/Benchmarks.md)
