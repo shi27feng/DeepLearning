@@ -201,7 +201,7 @@ bazel clean
 pip3 install --upgrade <PATH_TO_TENSORFLOW_CPU_ONLY_WHL_FILE>
 ```
 
-## Tensorflow OpenCL ##
+## Tensorflow AMD OpenCL ##
 - change the directory to "$HOME/opt/git"
 ```
 cd $HOME/opt/git
