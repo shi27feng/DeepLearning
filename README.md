@@ -18,7 +18,7 @@ This repository will mostly contain documentation about my Tensorflow (CPU + GPU
 - Desktop Environment: LXDE
 
 # AMD OpenCL Setup #
-- see [AMD_OpenCL_Setup](https://github.com/AlphasCodes/DeepLearning/blob/master/AMD_OpenCL_Setup.md)
+- see [AMD OpenCL Setup](https://github.com/AlphasCodes/DeepLearning/blob/master/AMD_OpenCL_Setup.md)
 
 # Tensorflow Setup #
 - see [Tensorflow Setup](https://github.com/AlphasCodes/DeepLearning/blob/master/Tensorflow_Setup.md)
