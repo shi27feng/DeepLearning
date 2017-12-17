@@ -30,7 +30,7 @@ The [matmul_bench.py](https://github.com/AlphasCodes/DeepLearning/blob/master/ma
 --- 14.368497848510742 seconds tensorflow---
 0.08 Tops/sec
 ```
-- Tensorflow OpenCL version (iGPU + 2 CPU threads were used)
+- Tensorflow OpenCL version (iGPU + 1-2 CPU threads were used)
 ```
 (tensorflow-opencl) steven@box:~/Coding$ python3 matmul_bench.py
 2017-12-16 14:23:23.861575: I ./tensorflow/core/common_runtime/sycl/sycl_device.h:70] Found following OpenCL devices:
@@ -104,7 +104,7 @@ real	26m39.144s
 user	94m44.365s
 sys	1m26.853s
 ```
-- Tensorflow OpenCL version (iGPU + 1 CPU thread were used)
+- Tensorflow OpenCL version (iGPU + 1-2 CPU threads were used)
 ```
 (tensorflow-opencl) steven@box:~/opt/git/tensorflow-models/tutorials/image/mnist$ time python3 convolutional.py
 Extracting data/train-images-idx3-ubyte.gz
@@ -166,7 +166,7 @@ Filling queue with 20000 CIFAR images before starting to train. This will take a
 2017-12-17 19:54:46.158733: step 50, loss = 4.32 (228.6 examples/sec; 0.560 sec/batch)
 ...
 ```
-- Tensorflow OpenCL version (iGPU + 1 CPU thread were used)
+- Tensorflow OpenCL version (iGPU + 1-2 CPU threads were used)
 ```
 (tensorflow-opencl) steven@box:~/opt/git/tensorflow-models/tutorials/image/cifar10$ python3 cifar10_train.py
 Filling queue with 20000 CIFAR images before starting to train. This will take a few minutes.
