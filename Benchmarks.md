@@ -137,3 +137,46 @@ real	72m53.834s
 user	36m24.795s
 sys	47m18.129s
 ```
+
+# Tensorflow CIFAR10 Example #
+- Tensorflow non CPU optimized version (all 4 CPU threads were used)
+```
+(tensorflow-vanilla) steven@box:~/opt/git/tensorflow-models/tutorials/image/cifar10$ python3 cifar10_train.py
+/home/steven/virtualenvs/tensorflow-vanilla/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module 'tensorflow.python.framework.fast_tensor_util' does not match runtime version 3.6
+  return f(*args, **kwds)
+Filling queue with 20000 CIFAR images before starting to train. This will take a few minutes.
+2017-12-17 20:11:12.936373: I tensorflow/core/platform/cpu_feature_guard.cc:137] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2017-12-17 20:11:17.256330: step 0, loss = 4.67 (283.1 examples/sec; 0.452 sec/batch)
+2017-12-17 20:11:25.857986: step 10, loss = 4.61 (148.8 examples/sec; 0.860 sec/batch)
+2017-12-17 20:11:34.117354: step 20, loss = 4.43 (155.0 examples/sec; 0.826 sec/batch)
+2017-12-17 20:11:42.353447: step 30, loss = 4.48 (155.4 examples/sec; 0.824 sec/batch)
+2017-12-17 20:11:50.615841: step 40, loss = 4.35 (154.9 examples/sec; 0.826 sec/batch)
+2017-12-17 20:11:58.888452: step 50, loss = 4.33 (154.7 examples/sec; 0.827 sec/batch)
+...
+```
+- Tensorflow CPU optimized version (all 4 CPU threads were used)
+```
+(tensorflow) steven@box:~/opt/git/tensorflow-models/tutorials/image/cifar10$ python3 cifar10_train.py
+Filling queue with 20000 CIFAR images before starting to train. This will take a few minutes.
+2017-12-17 19:54:18.040976: step 0, loss = 4.68 (327.0 examples/sec; 0.391 sec/batch)
+2017-12-17 19:54:23.714345: step 10, loss = 4.58 (225.6 examples/sec; 0.567 sec/batch)
+2017-12-17 19:54:29.196855: step 20, loss = 4.42 (233.5 examples/sec; 0.548 sec/batch)
+2017-12-17 19:54:34.862630: step 30, loss = 4.37 (225.9 examples/sec; 0.567 sec/batch)
+2017-12-17 19:54:40.559356: step 40, loss = 4.31 (224.7 examples/sec; 0.570 sec/batch)
+2017-12-17 19:54:46.158733: step 50, loss = 4.32 (228.6 examples/sec; 0.560 sec/batch)
+...
+```
+- Tensorflow OpenCL version (iGPU + 1 CPU thread were used)
+```
+(tensorflow-opencl) steven@box:~/opt/git/tensorflow-models/tutorials/image/cifar10$ python3 cifar10_train.py
+Filling queue with 20000 CIFAR images before starting to train. This will take a few minutes.
+2017-12-17 19:55:54.613673: I ./tensorflow/core/common_runtime/sycl/sycl_device.h:70] Found following OpenCL devices:
+2017-12-17 19:55:54.613805: I ./tensorflow/core/common_runtime/sycl/sycl_device.h:72] id: 0, type: GPU, name: Carrizo, vendor: Advanced Micro Devices, Inc., profile: FULL_PROFILE
+2017-12-17 20:04:10.015395: step 0, loss = 4.68 (2.6 examples/sec; 49.582 sec/batch)
+2017-12-17 20:04:19.847490: step 10, loss = 4.62 (130.2 examples/sec; 0.983 sec/batch)
+2017-12-17 20:04:29.133155: step 20, loss = 4.47 (137.8 examples/sec; 0.929 sec/batch)
+2017-12-17 20:04:38.102069: step 30, loss = 4.46 (142.7 examples/sec; 0.897 sec/batch)
+2017-12-17 20:04:47.246624: step 40, loss = 4.37 (140.0 examples/sec; 0.914 sec/batch)
+2017-12-17 20:04:56.185051: step 50, loss = 4.38 (143.2 examples/sec; 0.894 sec/batch)
+...
+```
